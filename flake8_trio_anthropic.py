@@ -11,7 +11,6 @@ class Visitor(ast.NodeVisitor):
         super().__init__()
         self.problems: list[tuple[int, int]] = []
 
-
     def check_move_on_after_no_await(self, node: ast.With):
         for withitem in node.items:
             if not isinstance(withitem.context_expr, ast.Call):
@@ -22,6 +21,7 @@ class Visitor(ast.NodeVisitor):
                 break
         else:
             return
+        # We can either recursively parse the AST looking for an Await
         for expr in node.body:
             if isinstance(expr, ast.Expr):
                 if isinstance(expr.value, ast.Await):
@@ -29,9 +29,15 @@ class Visitor(ast.NodeVisitor):
         else:
             self.problems.append((node.lineno, node.col_offset))
 
+        # or assume there's no Await, and in a visit_Await, pop all with's from the
+        # problem list that are parents to it. (although I suppose we then have the
+        # same problem in reverse, although parsing upwards is easier than the
+        # other way around
+
     def visit_With(self, node: ast.With) -> None:  # pylint: disable=invalid-name
         self.check_move_on_after_no_await(node)
         self.generic_visit(node)
+
 
 class Plugin:  # pylint: disable=too-few-public-methods
     name = __name__

@@ -5,12 +5,12 @@ import setuptools
 NAME = "flake8_trio_anthropic"
 
 requires = [
-        "flake8 >= 3.9.0",
-        ]
+    "flake8 >= 3.9.0",
+]
 
 setuptools.setup(
     name=NAME,
-    version='0.1.0',
+    version="0.1.0",
     author="John Litborn",
     author_email="john.litborn+FTA@pm.me",
     py_modules=[NAME],
@@ -32,15 +32,13 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
-    #long_description=(
+    # long_description=(
     #    local_file("README.md").open().read()
     #    + "\n\n"
     #    + local_file("CHANGELOG.md").open().read()
-    #),
-    #long_description_content_type="text/markdown",
+    # ),
+    # long_description_content_type="text/markdown",
     entry_points={
-        "flake8.extension": [
-            f"TRIO0 = {NAME}:Plugin"
-            ],
+        "flake8.extension": [f"TRIO0 = {NAME}:Plugin"],
     },
 )

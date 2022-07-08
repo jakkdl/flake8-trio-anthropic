@@ -37,3 +37,14 @@ def test_simple_has_await2():
         "  print('hello')"
     )
     assert _results(code) == set()
+
+def test_has_await_in_loop():
+    code = (
+        "import trio\n"
+        "with trio.move_on_after(10):\n"
+        "  pass\n"
+        "  while True:\n"
+        "    await trio.sleep(1)\n"
+        "  print('hello')"
+    )
+    assert _results(code) == set()
